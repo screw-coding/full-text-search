@@ -1,8 +1,22 @@
 package main
 
+import "strings"
+
 // index is an invented index.It maps tokens to document IDs
 type index map[string][]int
 
+func (idx index) addIndexedData(k []byte, v []byte) error {
+	strDocIds := strings.Split(string(v), ",")
+
+	var intDocIds []int
+	for id := range strDocIds {
+		intDocIds = append(intDocIds, id)
+	}
+	idx[string(k)] = intDocIds
+	return nil
+}
+
+// 索引中加入原始文档数据,此函数会进行原始数据的处理
 func (idx index) add(docs []document) {
 	//遍历每个文档
 	for _, doc := range docs {
